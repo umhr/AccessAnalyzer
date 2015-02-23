@@ -73,19 +73,20 @@ package
                     
 					var requestData:RequestData = new RequestData(bytes);
 					
-					if(requestData.queryList){
+					// GETでクエリーがあれば、ここから取り出せる。Object型
+					if (requestData.queryList) {
 						Log.dump(requestData.queryList);
 					}
 					
+					// POSTでデータがあれば、ここから取り出せる。Object型
 					if(requestData.postList){
 						Log.dump(requestData.postList);
 					}
 					
+					// htmlや画像ファイルなどを返す際の処理。
                     var filePath:String = File.applicationDirectory.nativePath + "/html";
 					filePath += requestData.path;
-					
                     var file:File = File.applicationStorageDirectory.resolvePath(filePath);
-					
 					if (file.isDirectory) {
 						// ディレクトリだった場合、/をつけて移動させる。
 						var location:String = "http://" + requestData.host + requestData.path + "/";
@@ -93,6 +94,8 @@ package
 					}
 					else if (file.exists && !file.isDirectory)
                     {
+						// ファイルが存在し、ディレクトリでない場合
+						//　ファイルを開いて、書き込み、返す。
 						var stream:FileStream = new FileStream();
 						stream.open( file, FileMode.READ );
 						var content:ByteArray = new ByteArray();
@@ -104,6 +107,7 @@ package
                     {
 						socket.writeBytes(new ResponceData(404).toByteArray());
                     }
+					
                     socket.flush();
                     socket.close();
                 }

@@ -2,7 +2,6 @@ package
 {
 	import com.hurlant.util.Base64;
 	import flash.utils.ByteArray;
-	import jp.mztm.umhr.logging.Log;
 	
 	/**
 	 * ...
